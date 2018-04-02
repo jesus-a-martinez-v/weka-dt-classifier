@@ -4,15 +4,21 @@ import weka.classifiers.AbstractClassifier
 import weka.classifiers.Evaluation
 import weka.classifiers.trees.J48
 import weka.core.Instances
-import weka.core.converters.ConverterUtils
+import weka.core.converters.CSVLoader
+import java.io.File
 import java.util.*
 import kotlin.math.round
 
 object Classifier {
     fun loadData(): Instances {
         val filePath = this.javaClass.getResource("/iris.csv").toURI().path
-        val source = ConverterUtils.DataSource(filePath)
-        val data = source.dataSet
+        val file = File(filePath)
+
+        val csvLoader = CSVLoader()
+        csvLoader.noHeaderRowPresent = true
+        csvLoader.setSource(file)
+
+        val data = csvLoader.dataSet
 
         val unknownClassIndex = data.classIndex() == -1
 
